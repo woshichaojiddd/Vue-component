@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <el-button></el-button>
+        <el-button></el-button>
+        <el-button></el-button>
+
+        --------驼峰式直接使用-------
+        <!-- 必须要用横线式 -->
+        <hello-world></hello-world>
+        <!-- 这种写法页面中不显示 -->
+        <HelloWorld></HelloWorld>
+
+    </div>
+</body>
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript">
+    /*
+          组件注册注意事项
+          如果使用驼峰式命名组件，那么在使用组件的时候，只能在字符串模板中用驼峰的方式使用组件，但是
+          在普通的标签模板中，必须使用短横线的方式使用组件
+        */
+
+    Vue.component('HelloWorld', {
+        data: function() {
+            return {
+                msg: 'hello world!'
+            }
+        },
+        template: '<div>{{msg}}</div>',
+    })
+
+    Vue.component('el-button', {
+        data: function() {
+            return {
+                count: 0
+            }
+        },
+        template: `
+        <div>
+            <button @click="handle">点击了{{count}}次</button>
+            <button>测试</button>
+            <HelloWorld></HelloWorld>
+        `,
+        methods: {
+            handle() {
+                this.count += 1
+            }
+        }
+    })
+
+
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: 'hello world'
+        }
+    })
+</script>
+
+</html>

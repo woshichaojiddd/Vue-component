@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .current {
+            color: orange;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 父组件向子组件传值 -->
+        <fruit-list :flist='list'>
+            <template slot-scope='slotprops'>
+                <div v-if='slotprops.info.id == 2' class="current">{{slotprops.info.name}}</div>
+                <div v-else>{{slotprops.info.name}}</div>
+            </template>
+        </fruit-list>
+    </div>
+
+</body>
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript">
+    // 子组件通过slot标签进行传值
+    // 父组件通过<template slot-scope='slotprops'> </template> 接受子组件传过来的值
+    Vue.component('fruit-list', {
+        data: function() {
+            return {
+                msg: ""
+            }
+        },
+        props: ['flist'],
+        template: `
+            <div>
+                <ul>
+                    <li :key='item.id' v-for='item in flist'>
+                        <slot :info='item'></slot>
+                    </li>
+                </ul>
+            </div>
+        `
+
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            list: [{
+                id: 1,
+                name: 'apple'
+            }, {
+                id: 2,
+                name: 'orange'
+            }, {
+                id: 3,
+                name: 'banana'
+            }]
+        }
+
+    })
+</script>
+
+</html>

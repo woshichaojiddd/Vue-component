@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        div {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div>父组件</div>
+        <item-a></item-a>
+        <item-b></item-b>
+        <div>
+            <button @click='handle'>销毁事件</button>
+        </div>
+
+    </div>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript">
+        // 原理:
+        // 一般采用eventbus的形式 创建一个第三方组件（事件中心C）
+        // 组件A 通过C.$emit，给C组件来传值
+        // 组件B 通过C.$on,来把值传取过来给B组件
+
+        // 提供事件中心
+        var c = new Vue()
+
+        // 事件a
+        Vue.component('item-a', {
+            data: function() {
+                return {
+                    num: 0
+                }
+            },
+            template: `
+            <div>
+                <div>事件A:{{num}}</div>
+                <button @click='handle'>点击</button>
+            </div>
+            `,
+            methods: {
+                handle: function() {
+                    // 传递数据给中间事件 前一个参数是名称 后一个参数是要传过去的值
+                    c.$emit('event-b', 1)
+                }
+            },
+            mounted: function() {
+                // 事件监听 即从中间事件接收传过来的值 val为接受到的值
+                c.$on('event-a', (val) => {
+                    this.num += val
+                })
+            }
+        })
+
+        // 事件b
+        Vue.component('item-b', {
+            data: function() {
+                return {
+                    num: 0
+                }
+            },
+            template: `
+            <div>
+                <div>事件B:{{num}}</div>
+                <button @click='handle'>点击</button>
+            </div>
+            `,
+            methods: {
+                handle: function() {
+                    c.$emit('event-a', 2)
+                }
+            },
+            mounted: function() {
+                c.$on('event-b', (val) => {
+                    this.num += val
+                })
+            }
+        })
+
+
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            methods: {
+                // 销毁事件
+                handle: function() {
+                    c.$off('event-a')
+                    c.$off('event-b')
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

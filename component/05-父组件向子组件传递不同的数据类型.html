@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 父组件的值传递了才可以使用 -->
+        <!-- 不加冒泡传递的就是字符串 -->
+        <menu-item content='这是传递一个静态值' :ptitle='title' :pnum='num' :parr='arr' :pobj='obj'></menu-item>
+
+
+    </div>
+    <div></div>
+</body>
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript">
+    // 父组件在子组件的标签上以属性的形式传递
+    // 子组件利用props接受
+    Vue.component('menu-item', {
+        data: function() {
+            return {
+                msg: '子组件本身的数据'
+            }
+        },
+        props: ['ptitle', 'content', 'pnum', 'parr', 'pobj'],
+        template: `
+            <div>
+                <div>{{content}}</div>
+                <div>{{ptitle}}</div>
+                <div>{{pnum}}</div>
+                <div v-for='(item,index) in parr'>{{item + '-----' + index}}</div>
+                <div v-for='(value,key,index) in pobj'>{{value + '-----' + key + '----' + index}}</div>
+            </div>
+
+        `
+
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            title: '这是来自父组件的值',
+            num: 12,
+            arr: [1, 2, 3],
+            obj: {
+                age: 18,
+                name: 'zs'
+            }
+        },
+
+    })
+</script>
+
+</html>

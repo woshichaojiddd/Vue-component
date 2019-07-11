@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <hello-world></hello-world>
+        <hello-tom></hello-tom>
+
+        <hello-jerry></hello-jerry>
+    </div>
+
+</body>
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript">
+    // 定义局部组件
+    var HelloWorld = {
+        data: function() {
+            return {
+                msg: 'HelloWorld'
+            }
+        },
+        template: '<div>{{msg}}</div>'
+    }
+    var HelloTom = {
+        data: function() {
+            return {
+                msg: 'HelloTom'
+            }
+        },
+        template: '<div>{{msg}}</div>'
+    }
+
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: 'hello world'
+        },
+        components: {
+            // 属性可以不加引号 但是有特殊字符的时候要加
+            'hello-world': HelloWorld,
+            'hello-tom': HelloTom,
+            // 也可以把对象写在内部
+            'hello-jerry': {
+                data: function() {
+                    return {
+                        msg: 'HelloJerry'
+                    }
+                },
+                template: '<div>{{msg}}</div>'
+            }
+        }
+    })
+</script>
+
+</html>

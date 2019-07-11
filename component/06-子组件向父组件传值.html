@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 父组件的值传递了才可以使用 -->
+        <div :style='{fontSize: fontSize + "px"}'>{{pmsg}}</div>
+        <menu-item @enlarge-text='handle'></menu-item>
+
+
+    </div>
+    <div></div>
+</body>
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript">
+    // props 是单向数据流 允许父组件向子组件传值 但是不允许直接在子组件中修改父组件传递过来的值
+    // 
+    Vue.component('menu-item', {
+        data: function() {
+            return {
+                msg: '子组件本身的数据'
+            }
+        },
+        // 子组件给父组件传递 利用$emit
+        template: `
+            <div>
+                <button @click='$emit("enlarge-text")'>字体变大</button>
+            </div>
+        `
+
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            pmsg: '来自父组件的值',
+            fontSize: 10
+        },
+        methods: {
+            handle: function() {
+                this.fontSize += 5
+            }
+        }
+
+    })
+</script>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <base-layout>
+            <p slot='header'>标题信息</p>
+            <p slot='header'>标题信息</p>
+            <p>内容</p>
+            <!-- template临时的包裹标签不会渲染到页面上 -->
+            <!-- template能够在不影响结构的基础上 还能简化包裹类名写法 -->
+            <template slot='footer'>
+            <p>底部信息</p>
+            <p>底部信息</p>
+            </template>
+        </base-layout>
+    </div>
+
+
+
+</body>
+
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript">
+    // 定义局部组件
+    // 插槽相当于把父组件的结构内容传递给子组件
+    // 父组件未传递结构内容时就显示slot的默认内容
+    Vue.component('base-layout', {
+        data: function() {
+            return {
+                msg: 'hello world!'
+            }
+        },
+        template: `
+            <div>
+                <header>
+                    <slot name="header"></slot>
+                </header>
+                <main>
+                    <slot></slot>
+                </main>
+                <footer>
+                    <slot name="footer"></slot>
+                </footer>
+            </div>
+        `
+
+    })
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: 'hello world'
+        },
+
+    })
+</script>
+
+</html>
